@@ -1,17 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 
-// WARNING: This key is hardcoded. Do not expose this code in a public repository.
-// For deployment, it is strongly recommended to use environment variables as explained in the deployment guide.
-const API_KEY = "AIzaSyCmI7Ja0f9MKDkKnUwhz8jcMQmkYcrvD_k";
+// For deployment, this API key should be set as an environment variable (e.g., in Vercel).
+const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
-  console.warn("API_KEY is not set. AI features will be disabled.");
+  console.warn("Gemini API key is not set. AI features will be disabled. Please set the API_KEY environment variable.");
 }
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// Conditionally initialize the client.
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
 export const generateReview = async (title: string, author: string): Promise<string> => {
-  if (!API_KEY) {
+  if (!ai) {
     return "API 키가 설정되지 않아 AI 요약을 생성할 수 없습니다.";
   }
   
