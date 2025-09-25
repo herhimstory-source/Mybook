@@ -80,13 +80,13 @@ const BookDetail: React.FC<BookDetailProps> = ({ book, onBack, onEditBook, onDel
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl overflow-hidden">
             <div className="md:flex">
                 <div className="md:flex-shrink-0">
-                    <img className="h-full w-full object-cover md:w-64" src={book.coverImage} alt={book.title} />
+                    <img className="h-64 w-full object-cover sm:h-80 md:h-full md:w-64" src={book.coverImage} alt={book.title} />
                 </div>
-                <div className="p-8 flex-grow">
+                <div className="p-4 sm:p-6 md:p-8 flex-grow">
                     <div className="flex justify-between items-start">
                         <div>
                             <div className="uppercase tracking-wide text-sm text-sky-500 dark:text-sky-400 font-semibold">{book.genre}</div>
-                            <h1 className="block mt-1 text-3xl leading-tight font-bold text-black dark:text-white">{book.title}</h1>
+                            <h1 className="block mt-1 text-2xl sm:text-3xl leading-tight font-bold text-black dark:text-white">{book.title}</h1>
                             <p className="mt-2 text-slate-600 dark:text-slate-300 text-lg">{book.author}</p>
                         </div>
                         <div className="flex space-x-2 flex-shrink-0 ml-4">
@@ -111,7 +111,7 @@ const BookDetail: React.FC<BookDetailProps> = ({ book, onBack, onEditBook, onDel
                     <p className="mt-6 text-slate-500 dark:text-slate-300 whitespace-pre-wrap">{book.summary || "작성된 요약이 없습니다."}</p>
                 </div>
             </div>
-            <div className="px-8 py-6 bg-slate-50 dark:bg-slate-900/50 border-t dark:border-slate-700">
+            <div className="px-4 py-6 sm:px-8 bg-slate-50 dark:bg-slate-900/50 border-t dark:border-slate-700">
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">인상 깊은 글귀</h2>
                     <button 

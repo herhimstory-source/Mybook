@@ -3,15 +3,23 @@ import { useLocalStorage } from './useLocalStorage';
 
 type Theme = 'light' | 'dark';
 
+// Helper function to get the system's preferred color scheme
+const getSystemTheme = (): Theme => {
+  // This check ensures the code doesn't break in environments without a `window` object (e.g., server-side rendering)
+  if (typeof window !== 'undefined' && window.matchMedia) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+  }
+  return 'light';
+};
+
 export function useDarkMode(): [Theme, () => void] {
-  const [theme, setTheme] = useLocalStorage<Theme>('theme', 'light');
+  // `useLocalStorage` will check for a saved 'theme' first.
+  // If nothing is saved, it will fall back to the system preference provided by `getSystemTheme()`.
+  const [theme, setTheme] = useLocalStorage<Theme>('theme', getSystemTheme());
 
-  useEffect(() => {
-    const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = localStorage.getItem('theme') as Theme || (isSystemDark ? 'dark' : 'light');
-    setTheme(initialTheme);
-  }, []);
-
+  // This effect applies the correct class to the <html> element whenever the theme changes.
   useEffect(() => {
     const root = window.document.documentElement;
     if (theme === 'dark') {
@@ -21,8 +29,10 @@ export function useDarkMode(): [Theme, () => void] {
     }
   }, [theme]);
 
+  // Function to toggle the theme
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    // A functional update is safer to prevent race conditions.
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return [theme, toggleTheme];
